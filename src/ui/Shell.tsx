@@ -9,6 +9,7 @@ import './Shell.css';
 import TopBar from './TopBar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
+import DialoguePanel from './DialoguePanel';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -27,6 +28,9 @@ const Shell: React.FC<ShellProps> = ({ children }) => {
         </main>
       </div>
       <Footer />
+
+      {/* Global Dialogue Overlay */}
+      <DialoguePanel />
     </div>
   );
 };

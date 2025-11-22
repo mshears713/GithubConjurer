@@ -14,6 +14,7 @@ export default defineConfig({
       '@git': path.resolve(__dirname, './src/git'),
       '@npc': path.resolve(__dirname, './src/npc'),
       '@state': path.resolve(__dirname, './src/state'),
+      '@scenarios': path.resolve(__dirname, './src/scenarios'),
     },
   },
   base: process.env.NODE_ENV === 'production' ? './' : '/',

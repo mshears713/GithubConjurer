@@ -29,7 +29,8 @@
       "@content/*": ["./src/content/*"],
       "@git/*": ["./src/git/*"],
       "@npc/*": ["./src/npc/*"],
-      "@state/*": ["./src/state/*"]
+      "@state/*": ["./src/state/*"],
+      "@scenarios/*": ["./src/scenarios/*"]
     }
   },
   "include": ["src"],

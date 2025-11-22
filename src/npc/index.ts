@@ -7,3 +7,5 @@
 
 export * from './types';
 export * from './characters';
+export * from './dialogueEngine';
+export * from './dialogueBuilder';
