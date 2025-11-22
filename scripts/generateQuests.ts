@@ -82,12 +82,23 @@ function generateTypescriptModule(quests: QuestDefinition[]): string {
  */
 
 import { QuestDefinition, QuestType } from './types';
-import { NPCRole } from '@npc/types';
 `;
 
-  // Serialize quests as TypeScript
+  // Serialize quests properly with QuestType enum
   const questsData = quests.map(quest => {
-    return `  ${JSON.stringify(quest, null, 2).replace(/"([^"]+)":/g, '$1:')}`;
+    // Convert quest to a format with proper enum values
+    const questCopy = { ...quest };
+    const questTypeMap: Record<string, string> = {
+      'advice': 'QuestType.Advice',
+      'quest': 'QuestType.Quest',
+      'task': 'QuestType.CultivationTask',
+    };
+
+    const questStr = JSON.stringify(questCopy, null, 2)
+      .replace(/"questType":\s*"(\w+)"/, (_, type) => `questType: ${questTypeMap[type] || 'QuestType.Quest'}`)
+      .replace(/"([^"]+)":/g, '$1:');
+
+    return `  ${questStr}`;
   }).join(',\n');
 
   return `${imports}

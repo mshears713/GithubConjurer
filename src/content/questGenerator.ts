@@ -137,7 +137,7 @@ function transformToOrchardLanguage(phrase: string): string {
  */
 export function generateQuestReward(
   lesson: LessonData,
-  questType: QuestType
+  _questType: QuestType
 ): QuestReward {
   const zoneRewards: Record<OrchardZone, string> = {
     [OrchardZone.InnerClearing]: 'seedling sprouts',
@@ -160,14 +160,9 @@ export function generateQuestReward(
 /**
  * Determine what gets unlocked after completing this quest
  */
-function determineUnlocks(lesson: LessonData): string[] {
-  const unlocks: string[] = [];
-
-  // Unlock next zone if this is the last lesson in current zone
-  // This is simplified - real logic would check actual lesson ordering
-  unlocks.push('next-quest');
-
-  return unlocks;
+function determineUnlocks(_lesson: LessonData): string[] {
+  // Simplified for now
+  return ['next-quest'];
 }
 
 /**
@@ -187,17 +182,9 @@ export function generatePreconditions(lesson: LessonData): string[] {
 /**
  * Generate completion criteria
  */
-export function generateCompletionCriteria(questType: QuestType): string {
-  switch (questType) {
-    case QuestType.Advice:
-      return 'Read and understand the explanation';
-    case QuestType.Quest:
-      return 'Complete all quest steps successfully';
-    case QuestType.CultivationTask:
-      return 'Finish the cultivation task';
-    default:
-      return 'Quest objectives met';
-  }
+export function generateCompletionCriteria(_questType: QuestType): string {
+  // Simplified for now
+  return 'Complete all quest objectives';
 }
 
 /**

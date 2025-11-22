@@ -7,7 +7,6 @@
  */
 
 import { QuestDefinition, QuestType } from './types';
-import { NPCRole } from '@npc/types';
 
 export const ALL_QUESTS: QuestDefinition[] = [
   {
@@ -19,7 +18,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Initial setup",
   gitExplanation: "Your identity is important - it's attached to every change you make!\r",
   npcInvolved: "orchard-keeper",
-  questType: "task",
+  questType: QuestType.CultivationTask,
   preconditions: [],
   steps: [
     {
@@ -71,7 +70,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Installation",
   gitExplanation: "1. **Download GitHub Desktop**\r",
   npcInvolved: "orchard-keeper",
-  questType: "task",
+  questType: QuestType.CultivationTask,
   preconditions: [],
   steps: [
     {
@@ -123,7 +122,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "GitHub Desktop",
   gitExplanation: "GitHub Desktop is a visual application for managing your code projects.",
   npcInvolved: "orchard-keeper",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [],
   steps: [
     {
@@ -154,7 +153,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Commits",
   gitExplanation: "A **commit** is a snapshot of your project at a specific point in time.\r",
   npcInvolved: "orchard-keeper",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [],
   steps: [
     {
@@ -190,7 +189,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Git vs github",
   gitExplanation: "These three work together but serve different purposes. Let's break them down!\r",
   npcInvolved: "orchard-keeper",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [],
   steps: [
     {
@@ -226,7 +225,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Interface tour",
   gitExplanation: "Let's explore every part of GitHub Desktop so you feel comfortable using it.\r",
   npcInvolved: "orchard-keeper",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [],
   steps: [
     {
@@ -278,7 +277,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Repositories",
   gitExplanation: "A **repository** (or \"repo\" for short) is a folder that Git tracks.\r",
   npcInvolved: "orchard-keeper",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [],
   steps: [
     {
@@ -314,7 +313,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Cloning repos",
   gitExplanation: "**Cloning** = Copying a repository from GitHub to your computer.\r",
   npcInvolved: "orchard-keeper",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -368,7 +367,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Creating new repo",
   gitExplanation: "Creating a repository is like starting a new project folder with Git superpowers.\r",
   npcInvolved: "orchard-keeper",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -422,7 +421,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Opening repos",
   gitExplanation: "Sometimes you have a Git repository on your computer that isn't in GitHub Desktop yet.\r",
   npcInvolved: "orchard-keeper",
-  questType: "task",
+  questType: QuestType.CultivationTask,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -476,7 +475,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Making your first commit",
   gitExplanation: "This is what you'll do every day: edit files, review changes, and commit them.\r",
   npcInvolved: "orchard-keeper",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -530,7 +529,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Pushing and pulling",
   gitExplanation: "**Push** = Upload your local commits to GitHub\r",
   npcInvolved: "botanist",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -584,7 +583,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Staging changes",
   gitExplanation: "**Staging** = Selecting which changes to include in your next commit.\r",
   npcInvolved: "orchard-keeper",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -638,7 +637,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Viewing history",
   gitExplanation: "The History tab shows every change ever made to your project - your project's story!\r",
   npcInvolved: "botanist",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -692,7 +691,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Writing commit messages",
   gitExplanation: "Good commit messages help you:\r",
   npcInvolved: "orchard-keeper",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -730,7 +729,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Creating branches",
   gitExplanation: "Let's create a branch and start working on it.\r",
   npcInvolved: "botanist",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -784,7 +783,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Deleting branches",
   gitExplanation: "After merging a feature, delete the branch - you don't need it anymore!\r",
   npcInvolved: "botanist",
-  questType: "task",
+  questType: QuestType.CultivationTask,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -838,7 +837,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Merging branches",
   gitExplanation: "**Merging** = Combining changes from one branch into another.\r",
   npcInvolved: "botanist",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -892,7 +891,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Switching branches",
   gitExplanation: "Switching branches changes which version of your project you're looking at and working on.\r",
   npcInvolved: "botanist",
-  questType: "task",
+  questType: QuestType.CultivationTask,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -946,7 +945,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "What are branches",
   gitExplanation: "**Branches** let you work on different versions of your project simultaneously.\r",
   npcInvolved: "botanist",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -984,7 +983,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Code review",
   gitExplanation: "**Code review** = Teammates reading and providing feedback on your code before it merges.\r",
   npcInvolved: "forager",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1022,7 +1021,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Fetching changes",
   gitExplanation: "When working with others, you need to regularly fetch their updates from GitHub.\r",
   npcInvolved: "forager",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1076,7 +1075,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Handling conflicts",
   gitExplanation: "**Merge conflict** = Git can't automatically combine changes - you must decide what to keep.\r",
   npcInvolved: "forager",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1130,7 +1129,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Pull requests",
   gitExplanation: "**Pull Request (PR)** = \"Hey team, I finished a feature! Please review before merging.\"\r",
   npcInvolved: "forager",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1168,7 +1167,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Stashing",
   gitExplanation: "**Stash** = Save uncommitted changes temporarily without committing them.\r",
   npcInvolved: "botanist",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1222,7 +1221,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Tags",
   gitExplanation: "**Tags** = Bookmarks for specific commits (usually releases)\r",
   npcInvolved: "botanist",
-  questType: "task",
+  questType: QuestType.CultivationTask,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1276,7 +1275,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Undoing changes",
   gitExplanation: "Learn how to safely undo changes at every stage of your Git workflow.\r",
   npcInvolved: "botanist",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1330,7 +1329,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Common issues",
   gitExplanation: "Quick solutions to common problems you might encounter.\r",
   npcInvolved: "forager",
-  questType: "quest",
+  questType: QuestType.Quest,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1384,7 +1383,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Git workflow",
   gitExplanation: "Learn the workflows used by professional development teams.\r",
   npcInvolved: "forager",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [
     "prev-quest-in-zone"
   ],
@@ -1422,7 +1421,7 @@ export const ALL_QUESTS: QuestDefinition[] = [
   gitConcept: "Security tips",
   gitExplanation: "Essential security practices for Git and GitHub.\r",
   npcInvolved: "forager",
-  questType: "advice",
+  questType: QuestType.Advice,
   preconditions: [
     "prev-quest-in-zone"
   ],

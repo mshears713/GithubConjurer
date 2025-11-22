@@ -1,11 +1,11 @@
 import './App.css';
 import Shell from './ui/Shell';
-import LessonBrowser from './ui/LessonBrowser';
+import QuestBrowser from './ui/QuestBrowser';
 
 function App() {
   return (
     <Shell>
-      <LessonBrowser />
+      <QuestBrowser />
     </Shell>
   );
 }

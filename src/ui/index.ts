@@ -7,3 +7,5 @@
 
 export { default as Shell } from './Shell';
 export { default as LessonBrowser } from './LessonBrowser';
+export { default as QuestBrowser } from './QuestBrowser';
+export { default as QuestViewer } from './QuestViewer';
