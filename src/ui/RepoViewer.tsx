@@ -5,18 +5,22 @@
  * branches, and recent commits.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './RepoViewer.css';
 import { RepoState } from '@state/useRepoStore';
 import { useRepoStore } from '@state/useRepoStore';
+import { RepoTree } from '@orchard/RepoTree';
 
 interface RepoViewerProps {
   repoState: RepoState;
 }
 
+type ViewMode = 'details' | 'tree';
+
 export const RepoViewer: React.FC<RepoViewerProps> = ({ repoState }) => {
   const { refreshRepo } = useRepoStore();
   const { repo, status, branches, commits } = repoState;
+  const [viewMode, setViewMode] = useState<ViewMode>('details');
 
   useEffect(() => {
     // Refresh repo data when component mounts
@@ -37,12 +41,35 @@ export const RepoViewer: React.FC<RepoViewerProps> = ({ repoState }) => {
           </h2>
           <p className="repo-location">{repo.path}</p>
         </div>
-        <button onClick={handleRefresh} className="refresh-button" title="Refresh">
-          🔄
-        </button>
+        <div className="header-actions">
+          <div className="view-mode-toggle">
+            <button
+              className={`toggle-btn ${viewMode === 'details' ? 'active' : ''}`}
+              onClick={() => setViewMode('details')}
+              title="Details View"
+            >
+              📋
+            </button>
+            <button
+              className={`toggle-btn ${viewMode === 'tree' ? 'active' : ''}`}
+              onClick={() => setViewMode('tree')}
+              title="Tree View"
+            >
+              🌳
+            </button>
+          </div>
+          <button onClick={handleRefresh} className="refresh-button" title="Refresh">
+            🔄
+          </button>
+        </div>
       </div>
 
-      {/* Status Section */}
+      {/* Render based on view mode */}
+      {viewMode === 'tree' ? (
+        <RepoTree repoState={repoState} />
+      ) : (
+        <>
+          {/* Status Section */}
       <div className="viewer-section">
         <h3 className="section-title">📊 Repository Status</h3>
         {status ? (
@@ -163,6 +190,8 @@ export const RepoViewer: React.FC<RepoViewerProps> = ({ repoState }) => {
           <p className="loading-text">Loading commits...</p>
         )}
       </div>
+        </>
+      )}
     </div>
   );
 };
