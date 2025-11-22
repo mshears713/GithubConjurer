@@ -5,12 +5,14 @@
  * Shows NPC dialogue and orchard narrative.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import './QuestViewer.css';
 import { QuestDefinition, QuestType } from '@content/types';
 import { useProgressStore, QuestStatus } from '@state/useProgressStore';
 import { useOrchardStore } from '@state/useOrchardStore';
 import { ALL_NPCS } from '@npc/characters';
+import { ALL_SCENARIOS } from '@scenarios/definitions';
+import ScenarioRunner from './ScenarioRunner';
 
 interface QuestViewerProps {
   quest: QuestDefinition;
@@ -22,12 +24,18 @@ const QuestViewer: React.FC<QuestViewerProps> = ({ quest, onClose, onNavigateToR
   const { getQuestStatus, startQuest, completeQuest } = useProgressStore();
   const { checkAndUnlockZones } = useOrchardStore();
   const questStatus = getQuestStatus(quest.id);
+  const [selectedScenario, setSelectedScenario] = useState<typeof ALL_SCENARIOS[0] | null>(null);
 
   // Get NPC info
   const npc = ALL_NPCS.find(n => n.id === quest.npcInvolved);
 
   // Check if quest has Git actions
   const hasGitActions = quest.steps.some(step => step.gitAction);
+
+  // Find related scenarios
+  const relatedScenarios = ALL_SCENARIOS.filter(scenario =>
+    scenario.relatedQuests?.includes(quest.id)
+  );
 
   // Detect quest topic for targeted navigation
   const getQuestTopic = () => {
@@ -196,7 +204,48 @@ const QuestViewer: React.FC<QuestViewerProps> = ({ quest, onClose, onNavigateToR
             </div>
           </section>
         )}
+
+        {/* Related Practice Scenarios */}
+        {relatedScenarios.length > 0 && (
+          <section className="quest-section scenarios-section">
+            <h2>🌱 Guided Practice Scenarios</h2>
+            <p className="scenarios-description">
+              Ready to practice {quest.gitConcept}? These step-by-step scenarios will guide you through real Git operations.
+            </p>
+            <div className="scenarios-list">
+              {relatedScenarios.map(scenario => (
+                <div key={scenario.id} className="scenario-card-mini">
+                  <div className="scenario-card-mini-header">
+                    <span className={`difficulty-badge-mini diff-${scenario.difficulty}`}>
+                      {scenario.difficulty}
+                    </span>
+                    <h4>{scenario.title}</h4>
+                  </div>
+                  <p className="scenario-card-mini-desc">{scenario.description}</p>
+                  <div className="scenario-card-mini-footer">
+                    <span className="scenario-meta-mini">⏱️ {scenario.estimatedMinutes} min</span>
+                    <span className="scenario-meta-mini">📋 {scenario.steps.length} steps</span>
+                    <button
+                      className="start-scenario-button"
+                      onClick={() => setSelectedScenario(scenario)}
+                    >
+                      Start Practice →
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
+
+      {/* Scenario Runner Modal */}
+      {selectedScenario && (
+        <ScenarioRunner
+          scenario={selectedScenario}
+          onClose={() => setSelectedScenario(null)}
+        />
+      )}
 
       {/* Actions */}
       <div className="quest-actions">

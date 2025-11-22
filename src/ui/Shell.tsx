@@ -10,6 +10,7 @@ import TopBar from './TopBar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import DialoguePanel from './DialoguePanel';
+import AchievementNotification from './AchievementNotification';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -31,6 +32,9 @@ const Shell: React.FC<ShellProps> = ({ children }) => {
 
       {/* Global Dialogue Overlay */}
       <DialoguePanel />
+
+      {/* Achievement Notifications */}
+      <AchievementNotification />
     </div>
   );
 };

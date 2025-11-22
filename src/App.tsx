@@ -4,8 +4,9 @@ import Shell from './ui/Shell';
 import QuestBrowser from './ui/QuestBrowser';
 import OrchardView from './ui/OrchardView';
 import RepoGrove from './ui/RepoGrove';
+import ScenarioBrowser from './ui/ScenarioBrowser';
 
-type ViewMode = 'map' | 'quests' | 'repos';
+type ViewMode = 'map' | 'quests' | 'scenarios' | 'repos';
 
 function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('map');
@@ -32,6 +33,12 @@ function App() {
             📜 Quest Log
           </button>
           <button
+            className={`view-tab ${viewMode === 'scenarios' ? 'active' : ''}`}
+            onClick={() => setViewMode('scenarios')}
+          >
+            🌱 Practice Scenarios
+          </button>
+          <button
             className={`view-tab ${viewMode === 'repos' ? 'active' : ''}`}
             onClick={() => setViewMode('repos')}
           >
@@ -43,6 +50,7 @@ function App() {
         <div className="view-content">
           {viewMode === 'map' && <OrchardView />}
           {viewMode === 'quests' && <QuestBrowser onNavigateToRepos={handleNavigateToRepos} />}
+          {viewMode === 'scenarios' && <ScenarioBrowser />}
           {viewMode === 'repos' && <RepoGrove />}
         </div>
       </div>
