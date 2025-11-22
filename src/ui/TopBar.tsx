@@ -7,7 +7,11 @@
 import React from 'react';
 import './TopBar.css';
 
-const TopBar: React.FC = () => {
+interface TopBarProps {
+  onOpenSettings: () => void;
+}
+
+const TopBar: React.FC<TopBarProps> = ({ onOpenSettings }) => {
   return (
     <header className="top-bar">
       <div className="top-bar-left">
@@ -16,6 +20,9 @@ const TopBar: React.FC = () => {
       </div>
       <div className="top-bar-right">
         <span className="subtitle">Your Git Learning Grove</span>
+        <button className="settings-button" onClick={onOpenSettings} title="Settings">
+          ⚙️
+        </button>
       </div>
     </header>
   );

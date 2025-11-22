@@ -11,6 +11,7 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import DialoguePanel from './DialoguePanel';
 import AchievementNotification from './AchievementNotification';
+import SettingsPanel from './SettingsPanel';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -18,10 +19,11 @@ interface ShellProps {
 
 const Shell: React.FC<ShellProps> = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <div className="shell">
-      <TopBar />
+      <TopBar onOpenSettings={() => setSettingsOpen(true)} />
       <div className="shell-body">
         <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
         <main className="shell-content">
@@ -35,6 +37,9 @@ const Shell: React.FC<ShellProps> = ({ children }) => {
 
       {/* Achievement Notifications */}
       <AchievementNotification />
+
+      {/* Settings Panel */}
+      {settingsOpen && <SettingsPanel onClose={() => setSettingsOpen(false)} />}
     </div>
   );
 };
