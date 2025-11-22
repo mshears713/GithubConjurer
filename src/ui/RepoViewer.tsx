@@ -10,6 +10,8 @@ import './RepoViewer.css';
 import { RepoState } from '@state/useRepoStore';
 import { useRepoStore } from '@state/useRepoStore';
 import { RepoTree } from '@orchard/RepoTree';
+import { GitOperations } from './GitOperations';
+import { BranchManager } from './BranchManager';
 
 interface RepoViewerProps {
   repoState: RepoState;
@@ -19,7 +21,7 @@ type ViewMode = 'details' | 'tree';
 
 export const RepoViewer: React.FC<RepoViewerProps> = ({ repoState }) => {
   const { refreshRepo } = useRepoStore();
-  const { repo, status, branches, commits } = repoState;
+  const { repo, status, commits } = repoState;
   const [viewMode, setViewMode] = useState<ViewMode>('details');
 
   useEffect(() => {
@@ -147,25 +149,14 @@ export const RepoViewer: React.FC<RepoViewerProps> = ({ repoState }) => {
         )}
       </div>
 
-      {/* Branches Section */}
+      {/* Git Operations */}
       <div className="viewer-section">
-        <h3 className="section-title">🌿 Branches</h3>
-        {branches && branches.length > 0 ? (
-          <div className="branches-list">
-            {branches.map(branch => (
-              <div
-                key={branch.name}
-                className={`branch-item ${branch.isCurrent ? 'current' : ''}`}
-              >
-                <span className="branch-icon">{branch.isCurrent ? '●' : '○'}</span>
-                <span className="branch-name">{branch.name}</span>
-                {branch.isDefault && <span className="default-badge">default</span>}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="loading-text">Loading branches...</p>
-        )}
+        <GitOperations repoState={repoState} />
+      </div>
+
+      {/* Branch Management */}
+      <div className="viewer-section">
+        <BranchManager repoState={repoState} />
       </div>
 
       {/* Commits Section */}
