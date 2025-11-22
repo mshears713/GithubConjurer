@@ -14,7 +14,8 @@
     "build:electron": "tsc -p tsconfig.electron.json",
     "preview": "vite preview",
     "package": "npm run build && electron-builder",
-    "parse-md": "tsx scripts/parseMarkdown.ts"
+    "parse-md": "tsx scripts/parseMarkdown.ts",
+    "generate-quests": "tsx scripts/generateQuests.ts"
   },
   "dependencies": {
     "react": "^18.2.0",

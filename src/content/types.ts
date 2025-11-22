@@ -29,20 +29,26 @@ export interface QuestDefinition {
   lessonId: string;
   title: string;
   description: string;
+  orchardNarrative: string;  // Story told in orchard metaphor
   gitConcept: string;
+  gitExplanation: string;    // Plain explanation of Git concept
   npcInvolved?: string;
   questType: QuestType;
-  preconditions: string[];  // Quest IDs that must be completed first
+  preconditions: string[];   // Quest IDs that must be completed first
   steps: QuestStep[];
   completionCriteria: string;
   reward: QuestReward;
+  estimatedMinutes?: number; // Estimated time to complete
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface QuestStep {
   order: number;
   instruction: string;
-  orchardMetaphor: string;
-  gitAction?: string;
+  orchardMetaphor: string;  // How this step relates to orchard
+  gitAction?: string;        // Actual Git operation (if any)
+  hint?: string;             // Optional hint for stuck users
+  validation?: string;       // How to verify step completion
 }
 
 export interface QuestReward {
