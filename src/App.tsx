@@ -3,8 +3,9 @@ import './App.css';
 import Shell from './ui/Shell';
 import QuestBrowser from './ui/QuestBrowser';
 import OrchardView from './ui/OrchardView';
+import RepoGrove from './ui/RepoGrove';
 
-type ViewMode = 'map' | 'quests';
+type ViewMode = 'map' | 'quests' | 'repos';
 
 function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('map');
@@ -26,12 +27,19 @@ function App() {
           >
             📜 Quest Log
           </button>
+          <button
+            className={`view-tab ${viewMode === 'repos' ? 'active' : ''}`}
+            onClick={() => setViewMode('repos')}
+          >
+            🌲 Repository Grove
+          </button>
         </div>
 
         {/* View Content */}
         <div className="view-content">
           {viewMode === 'map' && <OrchardView />}
           {viewMode === 'quests' && <QuestBrowser />}
+          {viewMode === 'repos' && <RepoGrove />}
         </div>
       </div>
     </Shell>

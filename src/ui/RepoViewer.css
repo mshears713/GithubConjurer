@@ -1,0 +1,267 @@
+.repo-viewer {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Header */
+.viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.header-content {
+  flex: 1;
+}
+
+.repo-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  color: var(--orchard-green);
+}
+
+.repo-location {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+}
+
+.refresh-button {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-color);
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.refresh-button:hover {
+  background-color: var(--orchard-green);
+  border-color: var(--orchard-green);
+  transform: rotate(90deg);
+}
+
+/* Sections */
+.viewer-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--bg-secondary);
+}
+
+.loading-text {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Status Info */
+.status-info {
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.status-row:last-child {
+  border-bottom: none;
+}
+
+.status-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.status-value {
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+}
+
+.branch-name {
+  color: var(--orchard-green);
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-badge.clean {
+  background-color: #4caf50;
+  color: white;
+}
+
+.status-badge.dirty {
+  background-color: #ff9800;
+  color: white;
+}
+
+/* File Changes */
+.file-changes {
+  margin-top: 1rem;
+}
+
+.change-group {
+  margin-bottom: 1rem;
+}
+
+.change-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.file-item.staged {
+  border-left: 4px solid #4caf50;
+}
+
+.file-item.unstaged {
+  border-left: 4px solid #ff9800;
+}
+
+.file-item.untracked {
+  border-left: 4px solid #9e9e9e;
+}
+
+.file-status {
+  display: inline-block;
+  width: 1.5rem;
+  font-weight: bold;
+  color: var(--text-secondary);
+}
+
+.file-path {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+/* Branches List */
+.branches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.branch-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--bg-secondary);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.branch-item.current {
+  background-color: var(--orchard-green);
+  color: white;
+  border-color: var(--orchard-green);
+}
+
+.branch-icon {
+  width: 2rem;
+  font-size: 1.5rem;
+  color: var(--orchard-green);
+}
+
+.branch-item.current .branch-icon {
+  color: white;
+}
+
+.branch-item .branch-name {
+  flex: 1;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.branch-item.current .branch-name {
+  color: white;
+}
+
+.default-badge {
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Commits List */
+.commits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.commit-item {
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 6px;
+  border-left: 4px solid var(--orchard-green);
+}
+
+.commit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.commit-hash {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--orchard-green);
+}
+
+.commit-author {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.commit-message {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.commit-date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
