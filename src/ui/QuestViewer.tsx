@@ -15,15 +15,31 @@ import { ALL_NPCS } from '@npc/characters';
 interface QuestViewerProps {
   quest: QuestDefinition;
   onClose?: () => void;
+  onNavigateToRepos?: () => void;
 }
 
-const QuestViewer: React.FC<QuestViewerProps> = ({ quest, onClose }) => {
+const QuestViewer: React.FC<QuestViewerProps> = ({ quest, onClose, onNavigateToRepos }) => {
   const { getQuestStatus, startQuest, completeQuest } = useProgressStore();
   const { checkAndUnlockZones } = useOrchardStore();
   const questStatus = getQuestStatus(quest.id);
 
   // Get NPC info
   const npc = ALL_NPCS.find(n => n.id === quest.npcInvolved);
+
+  // Check if quest has Git actions
+  const hasGitActions = quest.steps.some(step => step.gitAction);
+
+  // Detect quest topic for targeted navigation
+  const getQuestTopic = () => {
+    const concept = quest.gitConcept.toLowerCase();
+    if (concept.includes('commit')) return 'commits';
+    if (concept.includes('branch')) return 'branches';
+    if (concept.includes('stage') || concept.includes('staging')) return 'staging';
+    if (concept.includes('push') || concept.includes('pull') || concept.includes('fetch')) return 'sync';
+    if (concept.includes('merge') || concept.includes('conflict')) return 'merge';
+    if (concept.includes('stash')) return 'stash';
+    return 'general';
+  };
 
   const handleBeginQuest = () => {
     startQuest(quest.id);
@@ -161,6 +177,25 @@ const QuestViewer: React.FC<QuestViewerProps> = ({ quest, onClose }) => {
             </span>
           )}
         </div>
+
+        {/* Practice Mode - Link to Real Git Actions */}
+        {hasGitActions && onNavigateToRepos && (
+          <section className="quest-section practice-section">
+            <h2>🌲 Practice in Your Repository</h2>
+            <p className="practice-description">
+              This quest teaches real Git skills! Visit your Repository Grove to practice these actions on your own projects.
+            </p>
+            <div className="practice-actions">
+              <button className="practice-button" onClick={onNavigateToRepos}>
+                <span className="button-icon">🌲</span>
+                Open Repository Grove
+              </button>
+              <p className="practice-hint">
+                💡 Recommended for: <strong>{quest.gitConcept}</strong> ({getQuestTopic()})
+              </p>
+            </div>
+          </section>
+        )}
       </div>
 
       {/* Actions */}

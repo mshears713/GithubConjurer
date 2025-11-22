@@ -315,6 +315,66 @@
   text-transform: capitalize;
 }
 
+/* Practice Section */
+.practice-section {
+  background: linear-gradient(135deg, rgba(74, 124, 89, 0.08), rgba(139, 69, 19, 0.08));
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 2px dashed var(--orchard-green);
+}
+
+.practice-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.practice-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.practice-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 2rem;
+  background-color: var(--orchard-green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(74, 124, 89, 0.2);
+}
+
+.practice-button:hover {
+  background-color: var(--orchard-brown);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.3);
+}
+
+.button-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.practice-hint {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  text-align: center;
+}
+
+.practice-hint strong {
+  color: var(--orchard-green);
+}
+
 /* Actions */
 .quest-actions {
   padding: 1.5rem;

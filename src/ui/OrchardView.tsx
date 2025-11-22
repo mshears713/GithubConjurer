@@ -13,11 +13,14 @@ import { MapTree } from '@orchard/mapData';
 import { useProgressStore } from '@state/useProgressStore';
 import { getQuestById } from '@content/generatedQuests';
 import { ALL_NPCS } from '@npc/characters';
+import { useRepoStore } from '@state/useRepoStore';
 
 const OrchardView: React.FC = () => {
   const [selectedQuestId, setSelectedQuestId] = useState<string | null>(null);
   const [selectedNPCId, setSelectedNPCId] = useState<string | null>(null);
   const { getCompletionPercentage } = useProgressStore();
+  const { repos, getActiveRepo } = useRepoStore();
+  const activeRepo = getActiveRepo();
 
   // Handle tree click - show first quest associated with tree
   const handleTreeClick = (tree: MapTree) => {
@@ -54,6 +57,16 @@ const OrchardView: React.FC = () => {
           <span className="hud-stat">
             🌳 <strong>{getCompletionPercentage()}%</strong> Complete
           </span>
+          {repos.length > 0 && (
+            <span className="hud-stat">
+              🌲 <strong>{repos.length}</strong> {repos.length === 1 ? 'Repository' : 'Repositories'}
+            </span>
+          )}
+          {activeRepo && (
+            <span className="hud-stat">
+              {activeRepo.repo.isClean ? '✓' : '🌿'} <strong>{activeRepo.repo.name}</strong>
+            </span>
+          )}
         </div>
       </div>
 

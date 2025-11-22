@@ -14,7 +14,11 @@ import { useLessonStore } from '@state/useLessonStore';
 import QuestViewer from './QuestViewer';
 import { OrchardZone } from '@orchard/types';
 
-const QuestBrowser: React.FC = () => {
+interface QuestBrowserProps {
+  onNavigateToRepos?: () => void;
+}
+
+const QuestBrowser: React.FC<QuestBrowserProps> = ({ onNavigateToRepos }) => {
   const [selectedQuest, setSelectedQuest] = useState<QuestDefinition | null>(null);
   const [filterZone, setFilterZone] = useState<OrchardZone | 'all'>('all');
   const [filterType, setFilterType] = useState<QuestType | 'all'>('all');
@@ -155,6 +159,7 @@ const QuestBrowser: React.FC = () => {
             <QuestViewer
               quest={selectedQuest}
               onClose={() => setSelectedQuest(null)}
+              onNavigateToRepos={onNavigateToRepos}
             />
           </div>
         )}

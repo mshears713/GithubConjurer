@@ -47,3 +47,7 @@ user-data/
 
 # Cache
 .cache/
+
+# Test repositories (regenerate using TEST_REPOS_GUIDE.md)
+test-repos/*/
+!test-repos/*.md

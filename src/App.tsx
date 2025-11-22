@@ -10,6 +10,10 @@ type ViewMode = 'map' | 'quests' | 'repos';
 function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('map');
 
+  const handleNavigateToRepos = () => {
+    setViewMode('repos');
+  };
+
   return (
     <Shell>
       <div className="app-container">
@@ -38,7 +42,7 @@ function App() {
         {/* View Content */}
         <div className="view-content">
           {viewMode === 'map' && <OrchardView />}
-          {viewMode === 'quests' && <QuestBrowser />}
+          {viewMode === 'quests' && <QuestBrowser onNavigateToRepos={handleNavigateToRepos} />}
           {viewMode === 'repos' && <RepoGrove />}
         </div>
       </div>
