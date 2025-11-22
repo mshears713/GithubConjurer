@@ -8,6 +8,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { OrchardZone, TreeData, OrchardMapData } from '@orchard/types';
+import { DEFAULT_MAP_CONFIG } from '@orchard/mapData';
+import { useProgressStore, QuestStatus } from './useProgressStore';
 
 interface OrchardStore extends OrchardMapData {
   setTrees: (trees: TreeData[]) => void;
@@ -15,6 +17,7 @@ interface OrchardStore extends OrchardMapData {
   unlockZone: (zone: OrchardZone) => void;
   isZoneUnlocked: (zone: OrchardZone) => boolean;
   setPlayerPosition: (position: { x: number; y: number }) => void;
+  checkAndUnlockZones: () => void;
 }
 
 export const useOrchardStore = create<OrchardStore>()(
@@ -46,6 +49,55 @@ export const useOrchardStore = create<OrchardStore>()(
 
       setPlayerPosition: (position) => {
         set({ currentPlayerPosition: position });
+      },
+
+      checkAndUnlockZones: () => {
+        const currentUnlockedZones = get().unlockedZones;
+        const progressStore = useProgressStore.getState();
+
+        // Check each zone's unlock requirements
+        for (const zone of DEFAULT_MAP_CONFIG.zones) {
+          // Skip if already unlocked
+          if (currentUnlockedZones.includes(zone.id)) {
+            continue;
+          }
+
+          let shouldUnlock = true;
+
+          // Check completed quest requirements
+          if (zone.unlockRequirements.completedQuests) {
+            for (const questId of zone.unlockRequirements.completedQuests) {
+              if (progressStore.getQuestStatus(questId) !== QuestStatus.Completed) {
+                shouldUnlock = false;
+                break;
+              }
+            }
+          }
+
+          // Check completed zone requirements
+          if (zone.unlockRequirements.completedZones) {
+            for (const requiredZone of zone.unlockRequirements.completedZones) {
+              // A zone is "completed" if all its quests are completed
+              const zoneQuests = DEFAULT_MAP_CONFIG.trees
+                .filter(tree => tree.zone === requiredZone)
+                .flatMap(tree => tree.questIds);
+
+              const allZoneQuestsCompleted = zoneQuests.every(
+                questId => progressStore.getQuestStatus(questId) === QuestStatus.Completed
+              );
+
+              if (!allZoneQuestsCompleted) {
+                shouldUnlock = false;
+                break;
+              }
+            }
+          }
+
+          // Unlock zone if all requirements are met
+          if (shouldUnlock) {
+            get().unlockZone(zone.id);
+          }
+        }
       },
     }),
     {

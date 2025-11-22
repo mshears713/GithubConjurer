@@ -9,6 +9,7 @@ import React from 'react';
 import './QuestViewer.css';
 import { QuestDefinition, QuestType } from '@content/types';
 import { useProgressStore, QuestStatus } from '@state/useProgressStore';
+import { useOrchardStore } from '@state/useOrchardStore';
 import { ALL_NPCS } from '@npc/characters';
 
 interface QuestViewerProps {
@@ -18,6 +19,7 @@ interface QuestViewerProps {
 
 const QuestViewer: React.FC<QuestViewerProps> = ({ quest, onClose }) => {
   const { getQuestStatus, startQuest, completeQuest } = useProgressStore();
+  const { checkAndUnlockZones } = useOrchardStore();
   const questStatus = getQuestStatus(quest.id);
 
   // Get NPC info
@@ -29,6 +31,8 @@ const QuestViewer: React.FC<QuestViewerProps> = ({ quest, onClose }) => {
 
   const handleCompleteQuest = () => {
     completeQuest(quest.id);
+    // Check if completing this quest unlocks any zones
+    checkAndUnlockZones();
   };
 
   const isLocked = questStatus === QuestStatus.Locked;
