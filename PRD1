@@ -1,0 +1,489 @@
+  Impact Assessment
+
+  PROBLEMS WITH CURRENT CHANGES:
+
+  1. Security Risk
+  - Enabling nodeIntegration: true exposes the entire
+  Node.js API to renderer code
+  - If there's any XSS vulnerability, attackers could
+  execute arbitrary system commands
+  - The original design had nodeIntegration: false for good
+  security reasons
+
+  2. Plugin Conflict
+  - vite-plugin-electron-renderer tries to polyfill Node.js
+  modules, but it uses dynamic require() which doesn't work
+  with modern bundlers
+  - This is why you're getting "Dynamic require of
+  'child_process' is not supported"
+  - These plugins are meant for a different architecture
+  pattern
+
+  3. Architectural Mismatch
+  - The codebase has 482 lines of Git service code with 12
+  exported functions
+  - All called from 3 UI components: GitOperations.tsx,
+  BranchManager.tsx, and useRepoStore.ts
+  - The entire Git service layer was written expecting
+  direct access to Node.js APIs
+  - Current changes are "hacks" trying to force it to work,
+  not fixing the root issue
+
+  RECOMMENDATION:
+
+  This change is NOT acceptable. It will create more
+  problems:
+  - Security vulnerabilities
+  - Plugin conflicts and errors
+  - Maintenance nightmares
+  - Won't work when packaged for production
+
+  The proper fix is to implement IPC as originally intended
+  (note in preload.ts: "Git operations will be added here in
+   Phase 4").
+
+  ---
+  PRD for Fixing Git Service Architecture
+
+● ---
+  PRD: Fix Git Service Architecture - Implement Proper IPC
+
+  Problem Statement
+
+  The current implementation incorrectly places Git
+  operations (which require Node.js child_process) directly
+  in the Electron renderer process. This violates Electron
+  security best practices and doesn't work with modern Vite
+  bundling. The app cannot launch due to "Dynamic require of
+   'child_process' is not supported" errors.
+
+  The electron/preload.ts file contains a comment stating
+  "Git operations will be added here in Phase 4", indicating
+   the IPC architecture was planned but never implemented.
+
+  Current State
+
+  Files Affected by Temporary Changes (REVERT THESE)
+
+  1. electron/main.ts - Changed nodeIntegration: false →
+  true (SECURITY RISK)
+  2. vite.config.ts - Added vite-plugin-electron and
+  vite-plugin-electron-renderer plugins
+  3. package.json - Simplified dev script to use vite plugin
+
+  Git Service Implementation
+
+  - Location: src/git/gitService.ts (482 lines)
+  - Exports: 12 functions using child_process.exec
+  - Used by: 3 files
+    - src/ui/GitOperations.tsx
+    - src/ui/BranchManager.tsx
+    - src/state/useRepoStore.ts
+
+  Functions to Migrate
+
+  isGitRepo(repoPath) → boolean
+  getStatus(repoPath) → GitStatus
+  getLog(repoPath, options) → GitCommit[]
+  getBranches(repoPath) → GitBranch[]
+  createBranch(repoPath, branchName) → void
+  checkoutBranch(repoPath, branchName) → void
+  deleteBranch(repoPath, branchName) → void
+  stageFiles(repoPath, files) → void
+  unstageFiles(repoPath, files) → void
+  commit(repoPath, message, author) → void
+  getConfig(repoPath) → GitConfig
+  getRepoName(repoPath) → string
+
+  Goal
+
+  Implement proper Electron IPC architecture where:
+  1. Main Process executes Git commands via child_process
+  2. Preload Script exposes safe IPC API via contextBridge
+  3. Renderer Process calls Git operations through exposed
+  API
+  4. Security settings remain: nodeIntegration: false,
+  contextIsolation: true
+
+  Requirements
+
+  Must Have
+
+  1. All 12 Git functions work identically from renderer's
+  perspective
+  2. No breaking changes to calling code in UI components
+  3. Proper error handling across IPC boundary
+  4. Secure: nodeIntegration: false, contextIsolation: true
+  5. App launches and Git operations execute successfully
+
+  Should Have
+
+  1. TypeScript types shared between main and renderer
+  2. Clear error messages when Git operations fail
+  3. Minimal performance overhead from IPC
+
+  Won't Have (Out of Scope)
+
+  1. Changes to UI components beyond import statements
+  2. New Git features beyond existing 12 functions
+  3. Performance optimizations beyond basic IPC
+
+  Implementation Tasks
+
+  Task 1: Revert Temporary Changes
+
+  Files to revert:
+  - electron/main.ts - Restore nodeIntegration: false
+  - vite.config.ts - Remove vite-plugin-electron imports and
+   config
+  - package.json - Restore original dev script
+
+  Why: Clean slate to implement proper architecture
+
+  ---
+  Task 2: Create Git Service for Main Process
+
+  New file: electron/gitService.ts
+
+  Action:
+  - Copy all code from src/git/gitService.ts
+  - Keep all 12 exported functions identical
+  - Imports (child_process, util, path) work natively in
+  main process
+  - Export all functions for use in main.ts IPC handlers
+
+  Result: Main process has working Git operations
+
+  ---
+  Task 3: Set Up IPC Handlers in Main Process
+
+  File: electron/main.ts
+
+  Action:
+  Add IPC handlers for each of the 12 Git operations:
+
+  import { ipcMain } from 'electron';
+  import * as gitService from './gitService';
+
+  // After createWindow()
+  ipcMain.handle('git:isRepo', async (event, repoPath:
+  string) => {
+    return await gitService.isGitRepo(repoPath);
+  });
+
+  ipcMain.handle('git:getStatus', async (event, repoPath:
+  string) => {
+    return await gitService.getStatus(repoPath);
+  });
+
+  // ... repeat for all 12 functions
+
+  Pattern: git:<functionName> as channel name
+
+  Result: Main process listens for Git IPC requests
+
+  ---
+  Task 4: Expose Git API via Preload Script
+
+  File: electron/preload.ts
+
+  Action:
+  Replace the placeholder comment with actual Git API
+  exposure:
+
+  import { contextBridge, ipcRenderer } from 'electron';
+
+  contextBridge.exposeInMainWorld('electronAPI', {
+    platform: process.platform,
+
+    git: {
+      isRepo: (repoPath: string) =>
+        ipcRenderer.invoke('git:isRepo', repoPath),
+      getStatus: (repoPath: string) =>
+        ipcRenderer.invoke('git:getStatus', repoPath),
+      getLog: (repoPath: string, options?: any) =>
+        ipcRenderer.invoke('git:getLog', repoPath, options),
+      getBranches: (repoPath: string) =>
+        ipcRenderer.invoke('git:getBranches', repoPath),
+      createBranch: (repoPath: string, branchName: string)
+  =>
+        ipcRenderer.invoke('git:createBranch', repoPath,
+  branchName),
+      checkoutBranch: (repoPath: string, branchName: string)
+   =>
+        ipcRenderer.invoke('git:checkoutBranch', repoPath,
+  branchName),
+      deleteBranch: (repoPath: string, branchName: string,
+  force?: boolean) =>
+        ipcRenderer.invoke('git:deleteBranch', repoPath,
+  branchName, force),
+      stageFiles: (repoPath: string, files: string[]) =>
+        ipcRenderer.invoke('git:stageFiles', repoPath,
+  files),
+      unstageFiles: (repoPath: string, files: string[]) =>
+        ipcRenderer.invoke('git:unstageFiles', repoPath,
+  files),
+      commit: (repoPath: string, message: string, author?:
+  any) =>
+        ipcRenderer.invoke('git:commit', repoPath, message,
+  author),
+      getConfig: (repoPath: string) =>
+        ipcRenderer.invoke('git:getConfig', repoPath),
+      getRepoName: (repoPath: string) =>
+        ipcRenderer.invoke('git:getRepoName', repoPath),
+    }
+  });
+
+  Result: Renderer has type-safe window.electronAPI.git.*
+  methods
+
+  ---
+  Task 5: Create TypeScript Declarations for Window API
+
+  New file: src/types/electron.d.ts
+
+  Action:
+  import { GitResult, GitStatus, GitCommit, GitBranch,
+  GitConfig } from '@git/types';
+
+  export interface ElectronAPI {
+    platform: string;
+    git: {
+      isRepo: (repoPath: string) =>
+  Promise<GitResult<boolean>>;
+      getStatus: (repoPath: string) =>
+  Promise<GitResult<GitStatus>>;
+      getLog: (repoPath: string, options?: { limit?: number
+  }) => Promise<GitResult<GitCommit[]>>;
+      getBranches: (repoPath: string) =>
+  Promise<GitResult<GitBranch[]>>;
+      createBranch: (repoPath: string, branchName: string)
+  => Promise<GitResult<void>>;
+      checkoutBranch: (repoPath: string, branchName: string)
+   => Promise<GitResult<void>>;
+      deleteBranch: (repoPath: string, branchName: string,
+  force?: boolean) => Promise<GitResult<void>>;
+      stageFiles: (repoPath: string, files: string[]) =>
+  Promise<GitResult<void>>;
+      unstageFiles: (repoPath: string, files: string[]) =>
+  Promise<GitResult<void>>;
+      commit: (repoPath: string, message: string, author?: {
+   name: string; email: string }) =>
+  Promise<GitResult<void>>;
+      getConfig: (repoPath: string) =>
+  Promise<GitResult<GitConfig>>;
+      getRepoName: (repoPath: string) => string;
+    };
+  }
+
+  declare global {
+    interface Window {
+      electronAPI: ElectronAPI;
+    }
+  }
+
+  Result: TypeScript knows about window.electronAPI
+
+  ---
+  Task 6: Replace Renderer Git Service with IPC Wrapper
+
+  File: src/git/gitService.ts
+
+  Action:
+  Replace entire file with IPC wrapper:
+
+  /**
+   * Git Service - Renderer Process Wrapper
+   *
+   * Provides Git operations by calling Electron main
+  process via IPC.
+   * This replaces direct child_process calls for proper
+  Electron security.
+   */
+
+  import {
+    GitStatus,
+    GitCommit,
+    GitBranch,
+    GitConfig,
+    GitResult,
+  } from './types';
+
+  // All functions now delegate to main process via
+  window.electronAPI
+
+  export async function isGitRepo(repoPath: string):
+  Promise<GitResult<boolean>> {
+    return window.electronAPI.git.isRepo(repoPath);
+  }
+
+  export async function getStatus(repoPath: string):
+  Promise<GitResult<GitStatus>> {
+    return window.electronAPI.git.getStatus(repoPath);
+  }
+
+  export async function getLog(
+    repoPath: string,
+    options?: { limit?: number }
+  ): Promise<GitResult<GitCommit[]>> {
+    return window.electronAPI.git.getLog(repoPath, options);
+  }
+
+  export async function getBranches(repoPath: string):
+  Promise<GitResult<GitBranch[]>> {
+    return window.electronAPI.git.getBranches(repoPath);
+  }
+
+  export async function createBranch(
+    repoPath: string,
+    branchName: string
+  ): Promise<GitResult<void>> {
+    return window.electronAPI.git.createBranch(repoPath,
+  branchName);
+  }
+
+  export async function checkoutBranch(
+    repoPath: string,
+    branchName: string
+  ): Promise<GitResult<void>> {
+    return window.electronAPI.git.checkoutBranch(repoPath,
+  branchName);
+  }
+
+  export async function deleteBranch(
+    repoPath: string,
+    branchName: string,
+    force?: boolean
+  ): Promise<GitResult<void>> {
+    return window.electronAPI.git.deleteBranch(repoPath,
+  branchName, force);
+  }
+
+  export async function stageFiles(
+    repoPath: string,
+    files: string[]
+  ): Promise<GitResult<void>> {
+    return window.electronAPI.git.stageFiles(repoPath,
+  files);
+  }
+
+  export async function unstageFiles(
+    repoPath: string,
+    files: string[]
+  ): Promise<GitResult<void>> {
+    return window.electronAPI.git.unstageFiles(repoPath,
+  files);
+  }
+
+  export async function commit(
+    repoPath: string,
+    message: string,
+    author?: { name: string; email: string }
+  ): Promise<GitResult<void>> {
+    return window.electronAPI.git.commit(repoPath, message,
+  author);
+  }
+
+  export async function getConfig(repoPath: string):
+  Promise<GitResult<GitConfig>> {
+    return window.electronAPI.git.getConfig(repoPath);
+  }
+
+  export function getRepoName(repoPath: string): string {
+    return window.electronAPI.git.getRepoName(repoPath);
+  }
+
+  Result: UI components work unchanged - they import same
+  functions with same signatures
+
+  ---
+  Task 7: Update TypeScript Config
+
+  File: tsconfig.json
+
+  Action:
+  Ensure src/types/electron.d.ts is included:
+
+  {
+    "include": ["src", "src/types"]
+  }
+
+  ---
+  Task 8: Rebuild Electron Main Process
+
+  Command:
+  npm run build:electron
+
+  Result: electron/gitService.ts and updated
+  electron/main.ts compiled to dist-electron/
+
+  ---
+  Task 9: Test Launch and Basic Operations
+
+  Steps:
+  1. Run npm run dev
+  2. Verify app window opens without errors
+  3. Open DevTools console - check for errors
+  4. Test basic Git operation (e.g., add a repo in UI)
+  5. Verify operation completes successfully
+
+  Success Criteria:
+  - No console errors about child_process
+  - Git operations execute and return results
+  - No security warnings about nodeIntegration
+
+  ---
+  Definition of Done
+
+  - App launches without child_process errors
+  - All 12 Git functions work through IPC
+  - No changes required to UI component code (beyond build)
+  - Security settings restored: nodeIntegration: false,
+  contextIsolation: true
+  - TypeScript compilation succeeds
+  - No runtime errors in console
+  - At least one Git operation tested successfully (e.g.,
+  add repo)
+
+  Testing Checklist
+
+  Unit-level
+
+  - Each IPC handler in main.ts calls correct gitService
+  function
+  - Preload exposes all 12 functions
+  - Renderer gitService wrapper calls correct
+  window.electronAPI method
+
+  Integration
+
+  - useRepoStore.addRepo() successfully adds a repo
+  - GitOperations component can stage/commit files
+  - BranchManager can create/switch/delete branches
+
+  Regression
+
+  - Existing quests still display correctly
+  - Orchard map still renders
+  - NPC dialogues still trigger
+
+  Rollback Plan
+
+  If IPC implementation fails:
+  1. Restore original src/git/gitService.ts from backup
+  2. Keep temporary changes to electron/main.ts
+  (nodeIntegration: true)
+  3. Document as "technical debt - security risk in
+  production"
+
+  Notes for Agent
+
+  - DO NOT change function signatures in
+  src/git/gitService.ts
+  - DO NOT modify UI components unless absolutely necessary
+  - DO preserve exact return types and error handling
+  patterns
+  - DO test each IPC handler individually before moving to
+  next
+  - The goal is a transparent swap: same API, different
+  transport layer
