@@ -1,0 +1,23 @@
+PLACEHOLDER: Application Icon Required
+
+Before packaging for distribution, replace this file with:
+  - icon.ico (Windows)
+
+Icon specifications:
+  - Windows: ICO format with multiple sizes (16, 24, 32, 48, 64, 128, 256)
+  - Design: Orchard theme (tree, branches, leaves)
+  - Colors: Greens (#7a9b5a), browns (#8b7355)
+
+See assets/README.md for detailed requirements and creation instructions.
+See docs/PACKAGING_GUIDE.md for packaging process.
+
+To package with placeholder (testing only):
+  1. Create a simple icon.ico file
+  2. Run: npm run package
+  3. Check output in release/ directory
+
+For production release:
+  - Create professional icon design
+  - Test at all sizes (16x16 to 256x256)
+  - Verify on light and dark backgrounds
+  - Replace this file with actual icon.ico

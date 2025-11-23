@@ -1,0 +1,187 @@
+.achievement-notification-container {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 2000;
+  animation: slideInRight 0.5s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.achievement-notification {
+  background: linear-gradient(135deg, #ffffff, #f5f5f5);
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-width: 350px;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border: 3px solid;
+}
+
+.achievement-notification.rarity-common {
+  border-color: #9E9E9E;
+}
+
+.achievement-notification.rarity-rare {
+  border-color: #2196F3;
+  background: linear-gradient(135deg, #E3F2FD, #ffffff);
+}
+
+.achievement-notification.rarity-epic {
+  border-color: #9C27B0;
+  background: linear-gradient(135deg, #F3E5F5, #ffffff);
+  animation: epicPulse 2s ease infinite;
+}
+
+@keyframes epicPulse {
+  0%, 100% {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 10px 40px rgba(156, 39, 176, 0.6);
+  }
+}
+
+.achievement-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.achievement-icon-large {
+  font-size: 3.5rem;
+  line-height: 1;
+  animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.achievement-text {
+  flex: 1;
+}
+
+.achievement-text h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.achievement-text h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--orchard-green);
+  line-height: 1.2;
+}
+
+.notification-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.3rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.notification-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+}
+
+.achievement-description {
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.achievement-reward {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(74, 124, 89, 0.15));
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.reward-icon {
+  font-size: 1.5rem;
+}
+
+.reward-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.achievement-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rarity-badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.rarity-badge.rarity-common {
+  background: #9E9E9E;
+  color: white;
+}
+
+.rarity-badge.rarity-rare {
+  background: #2196F3;
+  color: white;
+}
+
+.rarity-badge.rarity-epic {
+  background: linear-gradient(135deg, #9C27B0, #E91E63);
+  color: white;
+}
+
+.continue-button {
+  padding: 0.5rem 1.25rem;
+  background: var(--orchard-green);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.continue-button:hover {
+  background: var(--orchard-brown);
+  transform: translateY(-1px);
+}

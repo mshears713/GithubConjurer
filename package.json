@@ -1,0 +1,67 @@
+{
+  "name": "orchard-of-branches",
+  "version": "0.1.0",
+  "description": "A cozy desktop learning app for Git and GitHub Desktop through an orchard metaphor",
+  "main": "dist-electron/main.js",
+  "author": "Orchard Keeper",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .",
+    "build": "tsc && vite build && npm run build:electron",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "preview": "vite preview",
+    "package": "npm run build && electron-builder",
+    "parse-md": "tsx scripts/parseMarkdown.ts",
+    "generate-quests": "tsx scripts/generateQuests.ts"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "gray-matter": "^4.0.3",
+    "marked": "^11.1.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vite-plugin-electron": "^0.28.1",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.orchardkeeper.orchard-of-branches",
+    "productName": "Orchard of Branches",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "win": {
+      "target": ["nsis"],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+dist-electron/
+release/
+*.exe
+*.dmg
+*.snap
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# User data
+user-data/
+*.db
+*.sqlite
+
+# Cache
+.cache/
+
+# Test repositories (regenerate using TEST_REPOS_GUIDE.md)
+test-repos/*/
+!test-repos/*.md

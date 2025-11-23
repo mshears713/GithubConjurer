@@ -1,0 +1,204 @@
+.git-operations {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+}
+
+.operations-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--bg-secondary);
+  padding-bottom: 0.5rem;
+}
+
+/* Empty State */
+.operations-empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+
+.operations-empty p {
+  margin: 0.5rem 0;
+}
+
+.operations-empty .hint {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Messages */
+.message {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.message.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 2px solid #ef5350;
+}
+
+.message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 2px solid #4caf50;
+}
+
+/* Operation Sections */
+.operation-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.operation-section h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.stage-all-btn {
+  padding: 0.4rem 0.75rem;
+  background-color: var(--orchard-green);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.stage-all-btn:hover {
+  background-color: #2d7a2d;
+}
+
+/* File List */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: var(--bg-secondary);
+  border-radius: 4px;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.file-row:hover {
+  background-color: #e0e0e0;
+}
+
+.file-status {
+  display: inline-block;
+  width: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.file-status.staged {
+  color: #4caf50;
+}
+
+.file-status.unstaged {
+  color: #ff9800;
+}
+
+.file-status.untracked {
+  color: #9e9e9e;
+}
+
+.file-path {
+  flex: 1;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-btn {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background-color: white;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--orchard-green);
+  border-color: var(--orchard-green);
+  color: white;
+}
+
+/* Commit Form */
+.commit-form {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 6px;
+}
+
+.commit-message-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  margin-bottom: 0.75rem;
+}
+
+.commit-message-input:focus {
+  outline: none;
+  border-color: var(--orchard-green);
+}
+
+.commit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--orchard-green);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.commit-btn:hover:not(:disabled) {
+  background-color: #2d7a2d;
+}
+
+.commit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

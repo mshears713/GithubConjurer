@@ -1,0 +1,352 @@
+.scenario-browser {
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.browser-header {
+  margin-bottom: 1.5rem;
+}
+
+.browser-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 2rem;
+  color: var(--orchard-green);
+}
+
+.scenario-stats {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.scenario-stats .stat {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.scenario-stats .stat strong {
+  color: var(--orchard-green);
+  font-size: 1.2rem;
+}
+
+/* Filters */
+.browser-filters {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+}
+
+.browser-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.browser-filters select {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.browser-filters select:focus {
+  outline: none;
+  border-color: var(--orchard-green);
+}
+
+/* Content */
+.browser-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
+/* Scenario List */
+.scenario-list {
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.scenario-count {
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.scenario-card {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scenario-card:hover {
+  border-color: var(--orchard-green);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.2);
+}
+
+.scenario-card.selected {
+  border-color: var(--orchard-green);
+  background: rgba(74, 124, 89, 0.05);
+  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.3);
+}
+
+.scenario-card.completed {
+  opacity: 0.8;
+}
+
+.scenario-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.difficulty-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.difficulty-badge.diff-beginner {
+  background: #4CAF50;
+  color: white;
+}
+
+.difficulty-badge.diff-intermediate {
+  background: #FF9800;
+  color: white;
+}
+
+.difficulty-badge.diff-advanced {
+  background: #F44336;
+  color: white;
+}
+
+.scenario-card-title {
+  flex: 1;
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+.completed-badge {
+  background: #4CAF50;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.scenario-card-description {
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.scenario-card-footer {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.scenario-meta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.scenario-meta.achievement {
+  color: var(--orchard-green);
+  font-weight: 600;
+}
+
+.no-scenarios {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+
+.no-scenarios p {
+  margin: 0.5rem 0;
+}
+
+/* Preview Panel */
+.scenario-preview {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.scenario-preview h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.75rem;
+  color: var(--orchard-green);
+}
+
+.preview-description {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.preview-meta {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.meta-row:last-child {
+  border-bottom: none;
+}
+
+.meta-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.meta-value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.meta-value.diff-beginner {
+  color: #4CAF50;
+}
+
+.meta-value.diff-intermediate {
+  color: #FF9800;
+}
+
+.meta-value.diff-advanced {
+  color: #F44336;
+}
+
+.preview-prerequisites {
+  margin-bottom: 1.5rem;
+}
+
+.preview-prerequisites h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--orchard-green);
+}
+
+.preview-prerequisites ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.preview-steps {
+  margin-bottom: 1.5rem;
+}
+
+.preview-steps h4 {
+  margin: 0 0 0.75rem 0;
+  color: var(--orchard-green);
+}
+
+.preview-steps ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.preview-steps li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.preview-reward {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(74, 124, 89, 0.1));
+  border: 2px solid var(--orchard-green);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.preview-reward h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--orchard-green);
+}
+
+.preview-reward p {
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Completed View */
+.scenario-completed-view {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.completed-icon {
+  font-size: 5rem;
+}
+
+.scenario-completed-view h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--orchard-green);
+}
+
+.scenario-completed-view p {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 400px;
+}
+
+.completed-hint {
+  font-size: 0.95rem;
+  font-style: italic;
+  opacity: 0.8;
+}
